@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Random;
 /**
  * A class to hold details of audio tracks.
  * Individual tracks may be played.
@@ -15,7 +15,7 @@ public class MusicOrganizer
     private MusicPlayer player;
     // A reader that can read music files and load them as tracks.
     private TrackReader reader;
-
+    private Random generator;
     /**
      * Create a MusicOrganizer
      */
@@ -24,6 +24,7 @@ public class MusicOrganizer
         tracks = new ArrayList<>();
         player = new MusicPlayer();
         reader = new TrackReader();
+        generator = new Random();
         readLibrary("../audio");
         System.out.println("Music library loaded. " + getNumberOfTracks() + " tracks.");
         System.out.println();
@@ -54,12 +55,33 @@ public class MusicOrganizer
     public void playTrack(int index)
     {
         if(indexValid(index)) {
-            Track track = tracks.get(index);
+            Track track = tracks.get(index);//this is the line that is getting the track to play
             player.playSample(track.getFilename());
             System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
         }
     }
-    
+    /**
+     * Choose a number from 0 to (size - 1)
+     * Get track at that number
+     * tell Player to Play fileName of that track
+     */
+    public void playRandomTrack(){
+        Track track = tracks.get(generator.nextInt(tracks.size()));
+        System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+        player.playSample(track.getFilename());
+        }
+    /**
+     * Copy ArrayList for next step
+     * Play all tracks in random order
+     */
+    public void playAllRandom(){
+        ArrayList<Track> copy = new ArrayList<Track>(tracks);
+        while (copy.size()>0){
+            Track track = copy.remove(generator.nextInt(copy.size()));
+            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+        player.playSample(track.getFilename());
+        }
+    }
     /**
      * Return the number of tracks in the collection.
      * @return The number of tracks in the collection.
@@ -119,6 +141,9 @@ public class MusicOrganizer
     
     /**
      * Play the first track in the collection, if there is one.
+     * 
+     * Edit: we are going to try adding in a random factor.
+     * I don't know if it will work.
      */
     public void playFirst()
     {
@@ -130,6 +155,7 @@ public class MusicOrganizer
         if(tracks.size() > 0) {
             player.startPlaying(tracks.get(0).getFilename());
         }
+        
     }
     
     /**
