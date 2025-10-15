@@ -64,6 +64,16 @@ public class MusicOrganizer
      * Choose a number from 0 to (size - 1)
      * Get track at that number
      * tell Player to Play fileName of that track
+     * Remeber that tracks is an ArrayList, and has all of the track objects
+     * 
+     * The long way to do this would be:
+     * 
+     * int listSize = tracks.size();
+     * int randomIndex = generator.nextInt(listSize);
+     * Track track = tracks.get(randomIndex);
+     * System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+     * player.playSample(track.getFilename());
+     * 
      */
     public void playRandomTrack(){
         Track track = tracks.get(generator.nextInt(tracks.size()));
@@ -77,8 +87,8 @@ public class MusicOrganizer
     public void playAllRandom(){
         ArrayList<Track> copy = new ArrayList<Track>(tracks);
         while (copy.size()>0){
-            Track track = copy.remove(generator.nextInt(copy.size()));
-            System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
+        Track track = copy.remove(generator.nextInt(copy.size()));
+        System.out.println("Now playing: " + track.getArtist() + " - " + track.getTitle());
         player.playSample(track.getFilename());
         }
     }
